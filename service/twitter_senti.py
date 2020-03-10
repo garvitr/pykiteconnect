@@ -3,6 +3,8 @@ import tweepy
 from tweepy import OAuthHandler
 from textblob import TextBlob
 
+from senti import sentiment_scores
+
 
 class TwitterClient(object):
     '''
@@ -16,8 +18,8 @@ class TwitterClient(object):
         # keys and tokens from the Twitter Dev Console
         consumer_key = '0fyvfe2pkaD7Npqvb513JGbZV'
         consumer_secret = 'MIHHfRMiQp2x30bLWgwNcKsdQeHTBVfP05DyWGnQZqinI5OoQ5'
-        access_token = ''
-        access_token_secret = ''
+        access_token = '100469670-fsBPnOEJuf4yjUGvCNjDlijL3LM7srAdfs3BpUXh'
+        access_token_secret = 'FHbbKx3hWBrMe6S81jJYVDm7VpDsbh2YmduN59TbJPFy8'
 
         # attempt authentication
         try:
@@ -52,7 +54,7 @@ class TwitterClient(object):
         else:
             return 'negative'
 
-    def get_tweets(self, query, count=10):
+    def get_tweets(self, query, count=10000):
         '''
         Main function to fetch tweets and parse them.
         '''
@@ -71,7 +73,10 @@ class TwitterClient(object):
                 # saving text of tweet
                 parsed_tweet['text'] = tweet.text
                 # saving sentiment of tweet
-                parsed_tweet['sentiment'] = self.get_tweet_sentiment(tweet.text)
+                # parsed_tweet['sentiment'] = self.get_tweet_sentiment(tweet.text)
+                parsed_tweet['sentiment'] = sentiment_scores(tweet.text)
+                # print (tweet.retweet_count)
+                # print (tweet)
 
                 # appending parsed tweet to tweets list
                 # if tweet.retweet_count > 0:
@@ -93,7 +98,7 @@ def main():
     # creating object of TwitterClient Class
     api = TwitterClient()
     # calling function to get tweets
-    tweets = api.get_tweets(query='YESBANK', count=2000)
+    tweets = api.get_tweets(query='YesBank', count=2000)
 
     print(len(tweets))
 
@@ -109,14 +114,14 @@ def main():
     print("Neutral tweets percentage: {} % \ ".format(100 * (len(tweets) - len(ntweets) - len(ptweets)) / len(tweets)))
 
     # printing first 5 positive tweets
-    print("\n\nPositive tweets:")
-    for tweet in ptweets[:10]:
-        print(tweet['text'])
-
-    # printing first 5 negative tweets
-    print("\n\nNegative tweets:")
-    for tweet in ntweets[:10]:
-        print(tweet['text'])
+    # print("\n\nPositive tweets:")
+    # for tweet in ptweets[:10]:
+    #     print(tweet['text'])
+    #
+    # # printing first 5 negative tweets
+    # print("\n\nNegative tweets:")
+    # for tweet in ntweets[:10]:
+    #     print(tweet['text'])
 
 
 if __name__ == "__main__":
