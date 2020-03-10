@@ -30,7 +30,7 @@ def pip_install(pkg):
 
 class install(_install):
     def run(self):
-        # Service identity has to be installed before twisted.
+        # service identity has to be installed before twisted.
         pip_install("service-identity>=17.0.0")
         py_version = "{}{}".format(sys.version_info.major, sys.version_info.minor)
 

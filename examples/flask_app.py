@@ -33,8 +33,8 @@ serializer = lambda obj: isinstance(obj, (date, datetime, Decimal)) and str(obj)
 
 # Kite Connect App settings. Go to https://developers.kite.trade/apps/
 # to create an app if you don't have one.
-kite_api_key = "kite_api_key"
-kite_api_secret = "kite_api_secret"
+kite_api_key = "00mywyvyrt2hm2uj"
+kite_api_secret = "vmt9up15kmwj2uwoei7dlyc8gya48slq"
 
 # Create a redirect url
 redirect_url = "http://{host}:{port}/login".format(host=HOST, port=PORT)
