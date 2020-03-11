@@ -77,7 +77,8 @@ parts/
 sdist/
 var/
 wheels/
-venvNew
+venvNew/
+constants.py
 *.egg-info/
 .installed.cfg
 *.egg
