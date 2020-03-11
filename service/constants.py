@@ -25,3 +25,8 @@ PORT = 5010
 HOST = "127.0.0.1"
 login_url = "https://kite.trade/connect/login?api_key={api_key}".format(api_key=api_key)
 console_url = "https://developers.kite.trade/apps/{api_key}".format(api_key=api_key)
+twitter_consumer_key = '0fyvfe2pkaD7Npqvb513JGbZV'
+twitter_consumer_secret = 'MIHHfRMiQp2x30bLWgwNcKsdQeHTBVfP05DyWGnQZqinI5OoQ5'
+twitter_access_token = ''
+twitter_access_token_secret = ''
+redirect_url = "https://{host}:{port}/login".format(host=HOST, port=PORT)

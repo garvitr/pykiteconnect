@@ -3,6 +3,7 @@ import tweepy
 from tweepy import OAuthHandler
 from textblob import TextBlob
 
+from constants import twitter_consumer_key, twitter_consumer_secret, twitter_access_token, twitter_access_token_secret
 from senti import sentiment_scores
 
 
@@ -16,17 +17,14 @@ class TwitterClient(object):
         Class constructor or initialization method.
         '''
         # keys and tokens from the Twitter Dev Console
-        consumer_key = '0fyvfe2pkaD7Npqvb513JGbZV'
-        consumer_secret = 'MIHHfRMiQp2x30bLWgwNcKsdQeHTBVfP05DyWGnQZqinI5OoQ5'
-        access_token = '100469670-fsBPnOEJuf4yjUGvCNjDlijL3LM7srAdfs3BpUXh'
-        access_token_secret = 'FHbbKx3hWBrMe6S81jJYVDm7VpDsbh2YmduN59TbJPFy8'
+
 
         # attempt authentication
         try:
             # create OAuthHandler object
-            self.auth = OAuthHandler(consumer_key, consumer_secret)
+            self.auth = OAuthHandler(twitter_consumer_key, twitter_consumer_secret)
             # set access token and secret
-            self.auth.set_access_token(access_token, access_token_secret)
+            self.auth.set_access_token(twitter_access_token, twitter_access_token_secret)
             # create tweepy API object to fetch tweets
             self.api = tweepy.API(self.auth)
         except:

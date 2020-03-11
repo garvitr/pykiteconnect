@@ -7,8 +7,7 @@ from decimal import Decimal
 import flask
 
 from constants import login_template, index_template, PORT, HOST, api_key, api_secret, error_message, login_url, \
-    console_url
-from constatns import redirect_url
+    console_url, redirect_url
 from service import service
 
 from flask import Flask, request, jsonify, session
