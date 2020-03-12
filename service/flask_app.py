@@ -7,8 +7,8 @@ from decimal import Decimal
 import flask
 
 from constants import login_template, index_template, PORT, HOST, api_key, api_secret, error_message, login_url, \
-    console_url, redirect_url
-from service import service
+    console_url, redirect_url, trade_url
+from service import ticker_service
 
 from flask import Flask, request, jsonify, session
 from kiteconnect import KiteConnect
@@ -22,6 +22,8 @@ serializer = lambda obj: isinstance(obj, (date, datetime, Decimal)) and str(obj)
 # App
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+
+access_token = ""
 
 
 # Templates
@@ -42,7 +44,8 @@ def index():
         api_key=api_key,
         redirect_url=redirect_url,
         console_url=console_url,
-        login_url=login_url
+        login_url=login_url,
+        trade_url=trade_url
     )
 
 
@@ -72,7 +75,7 @@ def login():
 
 @app.route("/algo")
 def algo():
-    return flask.Response(service(), mimetype='text/html')
+    return flask.Response(ticker_service(), mimetype='text/html')
 
 
 @app.route("/holdings.json")

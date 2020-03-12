@@ -1,10 +1,11 @@
 import logging
+from pprint import pprint
 
 from constants import access_token, api_key
 from kiteconnect import KiteConnect, KiteTicker
 
 
-def service():
+def ticker_service():
     kite = KiteConnect(api_key=api_key)
     kite.set_access_token(access_token)
 
@@ -12,14 +13,15 @@ def service():
 
     tokens = [3050241]
 
+    received_ticks = []
+
     # Callback for tick reception.
     def on_ticks(ws, ticks):
-        if len(ticks) > 0:
-            logging.info("Current mode: {}".format(ticks[0]["mode"]))
+        pprint(ticks)
+        received_ticks = ticks
 
     # Callback for successful connection.
     def on_connect(ws, response):
-        yield "Successfull connection"
         logging.info("Successfully connected. Response: {}".format(response))
         ws.subscribe(tokens)
         ws.set_mode(ws.MODE_FULL, tokens)
@@ -52,3 +54,9 @@ def service():
     # Infinite loop on the main thread. Nothing after this will run.
     # You have to use the pre-defined callbacks to manage subscriptions.
     kws.connect(threaded=True)
+
+    yield received_ticks
+
+
+if __name__ == "__main__":
+    ticker_service()
