@@ -1,21 +1,19 @@
 import os
 import json
 import logging
+import subprocess
+import time
 from datetime import date, datetime
 from decimal import Decimal
 
 import flask
 
 from constants import login_template, index_template, PORT, HOST, api_key, api_secret, error_message, login_url, \
-    console_url, redirect_url, trade_url
-from service import ticker_service
+    console_url, redirect_url, trade_url, stop_trade_url
 
 from flask import Flask, request, jsonify, session
 from kiteconnect import KiteConnect
-
-logging.basicConfig(level=logging.DEBUG)
-
-# Base settings
+from service import ticker_service
 
 serializer = lambda obj: isinstance(obj, (date, datetime, Decimal)) and str(obj)  # noqa
 
@@ -24,14 +22,9 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 access_token = ""
-
-
-# Templates
-
+kws = ""
 
 def get_kite_client():
-    """Returns a kite client object
-    """
     kite = KiteConnect(api_key=api_key)
     if "access_token" in session:
         kite.set_access_token(session["access_token"])
@@ -75,7 +68,32 @@ def login():
 
 @app.route("/algo")
 def algo():
-    return flask.Response(ticker_service(), mimetype='text/html')
+    global kws
+    kws = ticker_service();
+
+    def inner():
+        proc = subprocess.Popen(
+            ['dmesg'],  # call something with a lot of output so we can see it
+            shell=True,
+            stdout=subprocess.PIPE
+        )
+
+        for line in iter(proc.stdout.readline, ''):
+            time.sleep(1)  # Don't need this just shows the text streaming
+            yield line.rstrip() + '<br/>\n'
+
+    return flask.Response(inner(), mimetype='text/html')
+
+@app.route("/stopalgo")
+def stop_algo():
+    kws.stop()
+    return index_template.format(
+        api_key=api_key,
+        redirect_url=redirect_url,
+        console_url=console_url,
+        login_url=login_url,
+        trade_url=trade_url
+    )
 
 
 @app.route("/holdings.json")

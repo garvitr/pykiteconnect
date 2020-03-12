@@ -4,7 +4,6 @@ from pprint import pprint
 from constants import access_token, api_key
 from kiteconnect import KiteConnect, KiteTicker
 
-
 def ticker_service():
     kite = KiteConnect(api_key=api_key)
     kite.set_access_token(access_token)
@@ -13,12 +12,8 @@ def ticker_service():
 
     tokens = [3050241]
 
-    received_ticks = []
-
-    # Callback for tick reception.
     def on_ticks(ws, ticks):
         pprint(ticks)
-        received_ticks = ticks
 
     # Callback for successful connection.
     def on_connect(ws, response):
@@ -55,7 +50,7 @@ def ticker_service():
     # You have to use the pre-defined callbacks to manage subscriptions.
     kws.connect(threaded=True)
 
-    yield received_ticks
+    return kws
 
 
 if __name__ == "__main__":
