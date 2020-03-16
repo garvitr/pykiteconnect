@@ -48,7 +48,7 @@ def ticker_service():
 
     # Infinite loop on the main thread. Nothing after this will run.
     # You have to use the pre-defined callbacks to manage subscriptions.
-    kws.connect(threaded=True)
+    kws.connect()
 
     return kws
 
