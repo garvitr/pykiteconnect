@@ -15,7 +15,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG,
 app = Celery("tasks", broker="redis://localhost:6379/4")
 
 # Initialize dao
-db = psycopg2.connect(database="ticks", user="postgres", password="qwe@123", host="127.0.0.1", port="5432")
+db = psycopg2.connect(database="ticks", user="postgres", password="password", host="127.0.0.1", port="5432")
 
 # Db insert statement
 insert_tick_statement = "INSERT INTO ticks (date, token, price) VALUES (%(date)s, %(token)s, %(price)s)"

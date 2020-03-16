@@ -61,11 +61,13 @@ __pycache__/
 
 # C extensions
 *.so
+*.iml
 
 # Distribution / packaging
 .Python
 .idea
 .idea/
+
 env/
 build/
 develop-eggs/

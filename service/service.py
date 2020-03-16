@@ -3,6 +3,7 @@ from pprint import pprint
 
 from constants import access_token, api_key
 from kiteconnect import KiteConnect, KiteTicker
+from db import insert_ticks
 
 def ticker_service():
     kite = KiteConnect(api_key=api_key)
@@ -13,6 +14,7 @@ def ticker_service():
     tokens = [3050241]
 
     def on_ticks(ws, ticks):
+        insert_ticks.delay(ticks)
         pprint(ticks)
 
     # Callback for successful connection.
