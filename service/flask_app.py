@@ -9,7 +9,7 @@ from decimal import Decimal
 import flask
 
 from constants import login_template, index_template, PORT, HOST, api_key, api_secret, error_message, login_url, \
-    console_url, redirect_url, trade_url, stop_trade_url
+    console_url, redirect_url, trade_url, stop_trade_url, trade_template
 
 from flask import Flask, request, jsonify, session
 from kiteconnect import KiteConnect
@@ -23,6 +23,7 @@ app.secret_key = os.urandom(24)
 
 access_token = ""
 kws = ""
+
 
 def get_kite_client():
     kite = KiteConnect(api_key=api_key)
@@ -69,20 +70,14 @@ def login():
 @app.route("/algo")
 def algo():
     global kws
-    kws = ticker_service();
+    kws = ticker_service()
 
-    def inner():
-        proc = subprocess.Popen(
-            ['dmesg'],  # call something with a lot of output so we can see it
-            shell=True,
-            stdout=subprocess.PIPE
-        )
+    return trade_template.format(
+        indent=4,
+        sort_keys=True,
+        default=serializer
+    )
 
-        for line in iter(proc.stdout.readline, ''):
-            time.sleep(1)  # Don't need this just shows the text streaming
-            yield line.rstrip() + '<br/>\n'
-
-    return flask.Response(inner(), mimetype='text/html')
 
 @app.route("/stopalgo")
 def stop_algo():

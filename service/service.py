@@ -3,7 +3,6 @@ from pprint import pprint
 
 from constants import access_token, api_key
 from kiteconnect import KiteConnect, KiteTicker
-from db import insert_ticks
 
 def ticker_service():
     kite = KiteConnect(api_key=api_key)
@@ -11,10 +10,9 @@ def ticker_service():
 
     kws = KiteTicker(api_key, access_token)
 
-    tokens = [3050241]
+    tokens = [138098692]
 
     def on_ticks(ws, ticks):
-        insert_ticks.delay(ticks)
         pprint(ticks)
 
     # Callback for successful connection.
@@ -50,7 +48,7 @@ def ticker_service():
 
     # Infinite loop on the main thread. Nothing after this will run.
     # You have to use the pre-defined callbacks to manage subscriptions.
-    kws.connect()
+    kws.connect(threaded=True)
 
     return kws
 
